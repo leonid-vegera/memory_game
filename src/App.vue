@@ -1,26 +1,35 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="app">
+    <img class="app__logo" alt="homer logo" src="./assets/homer-simpson.gif">
+    <h1 class="app__title">Memory game</h1>
+    <p class="app__description">Запам'ятай всі зелені поля і спробуй їх вказати</p>
+    <board-panel></board-panel>
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import BoardPanel from './components/BoardPanel'
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    BoardPanel,
   }
 }
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+<style scoped lang="scss">
+.app {
+  font-family: 'Smokum', cursive, "Roboto Light", Avenir, Helvetica, Arial, sans-serif;
+  font-size: 24px;
+  box-sizing: border-box;
   text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+
+  &__logo {
+    width: 300px;
+  }
+
+  &__title {
+    margin: 0;
+  }
 }
 </style>
