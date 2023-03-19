@@ -1,16 +1,30 @@
 <template>
   <div class="board">
     <div class="board__field">
-      <board-cell v-for="cell in cells" :key="`item-${cell.id}`" :class="{ active: cell.value === 1 }"></board-cell>
+<!--      <board-cell v-for="cell in cells" :key="`item-${cell.id}`" :class="{ active: cell.value === 1 && gameStatus === GAME_STATUS.PREVIEW}"></board-cell>-->
+      <board-cell
+        v-for="cell in cells"
+        :key="`item-${cell.id}`"
+        :cell="cell"
+        :game-status="gameStatus"
+        @selectCell="selectCell($event)"
+      ></board-cell>
+
+      {{gameStatus}}
+
     </div>
     <div class="board__difficulty">Важкість <strong>{{ difficult }}</strong></div>
-    <button class="board__start" @click="startGame">Почати</button>
+    <button class="board__start" @click="startGame" :disabled="toDisableStartButton">Почати</button>
   </div>
 </template>
 
 <script>
 import BoardCell from "@/components/BoardCell";
-import {onBeforeMount, ref} from 'vue';
+import useGameInit from "@/components/composables/useGameInit";
+import useStartGame from "@/components/composables/useStartGame";
+import {GAME_STATUS} from "@/constans";
+import {ref} from "vue";
+import useGameProcess from "@/components/composables/useGameProcess";
 
 export default {
   name: "Board-panel",
@@ -18,53 +32,25 @@ export default {
     BoardCell
   },
   setup() {
-    const difficult = ref(4);
-    const cells = ref([]);
     const cellsNumber = 25;
+    const gameStatus = ref(GAME_STATUS.NONE);
 
-    const initField = function () {
-      cells.value = [];
-
-      for (let i = 0; i < cellsNumber; i++) {
-        cells.value.push({
-          id: i,
-          clicked: false,
-          value: 0,
-        })
-      }
-    }
-
-    onBeforeMount(initField);
+    const { difficult, cells, initField} = useGameInit(cellsNumber);
+    const { startGame, toDisableStartButton } = useStartGame(difficult, cellsNumber, cells, initField, gameStatus);
+    const { selectCell } = useGameProcess(cells);
 
     return {
       difficult,
       cells,
       cellsNumber,
       initField,
+      startGame,
+      gameStatus,
+      GAME_STATUS,
+      toDisableStartButton,
+      selectCell,
     };
   },
-  methods: {
-    occasionalIndex (min, max) {
-      return ~~(Math.random() * (max - min));
-    },
-    setCellsToFind() {
-      for (let i = 0; i < this.difficult; i++) {
-        const index = this.occasionalIndex(0, this.cellsNumber);
-        console.log('index', index)
-        if (this.cells[index].value !== 1) {
-          this.cells[index].value = 1;
-        } else {
-          i--;
-        }
-      }
-
-      console.log(this.cells)
-    },
-    startGame() {
-      this.initField();
-      this.setCellsToFind();
-    }
-  }
 }
 </script>
 
@@ -94,6 +80,18 @@ export default {
       outline: none;
       cursor: pointer;
       transition: 0.4s;
+
+      &:disabled {
+        background-color: rgba(52, 52, 180, 0.73);
+        color: #e5e5e5;
+        cursor: default;
+
+        &:hover {
+          background-color: rgba(52, 52, 180, 0.73);
+          color: #e5e5e5;
+          box-shadow: none;
+        }
+      }
 
       &:hover {
         background-color: #222291;

@@ -1,10 +1,50 @@
 <template>
-  <div class="cell"></div>
+<!--  <div class="cell"></div>-->
+<!--  <div class="cell" :class="{active: cell.value === 1 && gameStatus === GAME_STATUS.PREVIEW}"></div>-->
+  <div class="cell" :class="getBoardCellClasses" @click="select(cell.id)"></div>
+<!--  <div class="cell" :class="{active: cell.value === 1 && preview}"></div>-->
+<!--  <div :class="'cell ' + ((cell.value === 1 && preview) ? 'active' : '')"></div>-->
 </template>
 
 <script>
+import {CELL, GAME_STATUS} from "@/constans";
+import {computed} from "vue";
+
 export default {
-  name: "BoardCell"
+  name: "BoardCell",
+  props: {
+    cell: {
+      type: Object,
+      required: true,
+    },
+    // preview: {
+    //   type: Boolean,
+    //   required: false,
+    //   default: false,
+    // },
+    gameStatus: {
+      type: Number,
+      required: false,
+      default: GAME_STATUS.NONE,
+    }
+  },
+  setup(props) {
+    const getBoardCellClasses = computed(() => {
+      return (props.cell.value === CELL.FILLED && props.gameStatus === GAME_STATUS.PREVIEW || props.cell.clicked === true) ? 'active' : '';
+      // return isActiveClass;
+    });
+
+    return ({
+      getBoardCellClasses,
+    })
+  },
+  methods: {
+    select(id) {
+      if (this.gameStatus === GAME_STATUS.STARTED) {
+        this.$emit('selectCell', id)
+      }
+    }
+  }
 }
 </script>
 
