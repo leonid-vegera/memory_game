@@ -1,24 +1,5 @@
-# memory_game
+Implemented Game for memory training - Used Vue.js
 
-## Project setup
-```
-npm install
-```
+Technologies used: Vue.js, HTML, SCSS, JavaScript
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+[DEMO Link of Application](https://github.com/leonid-vegera/memory_game)
