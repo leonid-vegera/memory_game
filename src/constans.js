@@ -3,7 +3,9 @@ export const CELL = {
   FILLED: 1,
 }
 
-export const DIFFICULTY = 3;
+export const DEFAULT_DIFFICULTY = 3;
+export const MAX_DIFFICULTY = 12;
+export const GAME_SPEED = 2000;
 
 export const GAME_STATUS = {
   NONE: 0,
@@ -12,3 +14,4 @@ export const GAME_STATUS = {
   WIN: 3,
   FAIL: 4,
 }
+

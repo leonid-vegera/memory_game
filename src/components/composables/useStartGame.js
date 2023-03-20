@@ -1,17 +1,13 @@
-import {CELL, GAME_STATUS} from "@/constans";
+import {CELL, GAME_SPEED, GAME_STATUS} from "@/constans";
 import {computed} from "vue";
 
 export default function useStartGame (difficult, cellsNumber, cells, initField, gameStatus) {
-  // const preview = ref(false);
-
   function occasionalIndex (min, max) {
     return ~~(Math.random() * (max - min));
   }
 
   function setCellsToFind() {
-    // console.log(gameStatus)
     gameStatus.value = GAME_STATUS.PREVIEW;
-    // preview.value = true;
     for (let i = 0; i < difficult.value; i++) {
       const index = occasionalIndex(0, cellsNumber);
       if (cells.value[index].value !== CELL.FILLED) {
@@ -22,18 +18,12 @@ export default function useStartGame (difficult, cellsNumber, cells, initField, 
     }
 
     setTimeout(() => {
-      // preview.value = false;
       gameStatus.value = GAME_STATUS.STARTED;
-    }, 2000)
-
-    // setTimeout(() => {
-    //   cells.value.forEach(item => item.value = 0)
-    // }, 2000)
+    }, GAME_SPEED)
   }
 
   const toDisableStartButton = computed(() => {
-    // return gameStatus.value !== GAME_STATUS.NONE
-    return gameStatus.value === GAME_STATUS.PREVIEW
+    return gameStatus.value === GAME_STATUS.PREVIEW || gameStatus.value === GAME_STATUS.WIN
   })
 
   function startGame() {
