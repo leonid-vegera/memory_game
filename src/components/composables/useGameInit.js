@@ -1,9 +1,10 @@
-import {onBeforeMount, ref} from "vue";
-import {CELL, DIFFICULTY} from "@/constans";
+import {onBeforeMount, ref, watch} from "vue";
+import {CELL, DEFAULT_DIFFICULTY, MAX_DIFFICULTY} from "@/constans";
 
 export default function useGameInit (cellsNumber) {
-  const difficult = ref(DIFFICULTY);
+  const difficult = ref(DEFAULT_DIFFICULTY);
   const cells = ref([]);
+  const wins = ref(0);
 
   const initField = function () {
     cells.value = [];
@@ -17,11 +18,21 @@ export default function useGameInit (cellsNumber) {
     }
   }
 
+  watch(difficult, (newDifficult) => {
+    if (newDifficult > MAX_DIFFICULTY) {
+      difficult.value = MAX_DIFFICULTY;
+    }
+    if (newDifficult < DEFAULT_DIFFICULTY) {
+      difficult.value = DEFAULT_DIFFICULTY;
+    }
+  })
+
   onBeforeMount(initField);
 
   return ({
     difficult,
     cells,
     initField,
+    wins,
   })
 }

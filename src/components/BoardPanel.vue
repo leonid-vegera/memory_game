@@ -1,7 +1,6 @@
 <template>
   <div class="board">
-    <div class="board__field">
-<!--      <board-cell v-for="cell in cells" :key="`item-${cell.id}`" :class="{ active: cell.value === 1 && gameStatus === GAME_STATUS.PREVIEW}"></board-cell>-->
+    <div class="board__field" :class="getBoardClasses">
       <board-cell
         v-for="cell in cells"
         :key="`item-${cell.id}`"
@@ -9,11 +8,9 @@
         :game-status="gameStatus"
         @selectCell="selectCell($event)"
       ></board-cell>
-
-      {{gameStatus}}
-
     </div>
-    <div class="board__difficulty">Важкість <strong>{{ difficult }}</strong></div>
+    <div class="board__description">Важкість <strong>{{ difficult }}</strong></div>
+    <div class="board__description">Перемоги <strong>{{ wins }}</strong></div>
     <button class="board__start" @click="startGame" :disabled="toDisableStartButton">Почати</button>
   </div>
 </template>
@@ -23,7 +20,7 @@ import BoardCell from "@/components/BoardCell";
 import useGameInit from "@/components/composables/useGameInit";
 import useStartGame from "@/components/composables/useStartGame";
 import {GAME_STATUS} from "@/constans";
-import {ref} from "vue";
+import {computed, ref} from "vue";
 import useGameProcess from "@/components/composables/useGameProcess";
 
 export default {
@@ -35,9 +32,20 @@ export default {
     const cellsNumber = 25;
     const gameStatus = ref(GAME_STATUS.NONE);
 
-    const { difficult, cells, initField} = useGameInit(cellsNumber);
+    const { difficult, cells, initField, wins} = useGameInit(cellsNumber);
     const { startGame, toDisableStartButton } = useStartGame(difficult, cellsNumber, cells, initField, gameStatus);
-    const { selectCell } = useGameProcess(cells);
+    const { selectCell } = useGameProcess(cells, gameStatus, difficult, startGame, wins);
+
+    const getBoardClasses = computed(() => {
+      let boardClass = 'board__field';
+      if (gameStatus.value === GAME_STATUS.WIN) {
+        return boardClass + '--success';
+      }
+      if (gameStatus.value === GAME_STATUS.FAIL) {
+        return boardClass + '--error';
+      }
+      return boardClass;
+    })
 
     return {
       difficult,
@@ -49,6 +57,8 @@ export default {
       GAME_STATUS,
       toDisableStartButton,
       selectCell,
+      wins,
+      getBoardClasses,
     };
   },
 }
@@ -59,14 +69,22 @@ export default {
     &__field {
        width: 300px;
        min-height: 100px;
-       background-color: #11788f;
+       background-color: #f7d700;
        margin: auto;
        display: flex;
        justify-content: center;
        flex-wrap: wrap;
+
+      &--error {
+        background-color: #ea4c59;
+      }
+
+      &--success {
+        background-color: #86ea4c;
+      }
      }
 
-    &__difficulty {
+    &__description {
       margin: 10px 0;
     }
 
