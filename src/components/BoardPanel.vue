@@ -95,7 +95,7 @@ export default {
     &__start {
       align-self: center;
       width: 150px;
-      margin-bottom: 25px;
+      margin: 10px 0 25px;
       padding: 10px 20px;
       font-size: 0.8em;
       background-color: #3434b4;

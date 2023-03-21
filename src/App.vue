@@ -29,12 +29,12 @@ export default {
   flex-wrap: nowrap;
 
   &__description {
-    margin-bottom: 0;
+    margin: 10px 0;
     font-size: 0.8em;
   }
 
   &__logo {
-    width: 300px;
+    height: 100px;
     align-self: center;
   }
 
