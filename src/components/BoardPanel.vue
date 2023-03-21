@@ -29,7 +29,7 @@ export default {
     BoardCell
   },
   setup() {
-    const cellsNumber = 25;
+    const cellsNumber = 36;
     const gameStatus = ref(GAME_STATUS.NONE);
 
     const { difficult, cells, initField, wins} = useGameInit(cellsNumber);
@@ -66,8 +66,12 @@ export default {
 
 <style scoped lang="scss">
   .board {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+
     &__field {
-       width: 300px;
+       width: 360px;
        min-height: 100px;
        background-color: #f7d700;
        margin: auto;
@@ -89,6 +93,9 @@ export default {
     }
 
     &__start {
+      align-self: center;
+      width: 150px;
+      margin-bottom: 25px;
       padding: 10px 20px;
       font-size: 0.8em;
       background-color: #3434b4;

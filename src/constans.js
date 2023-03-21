@@ -4,7 +4,7 @@ export const CELL = {
 }
 
 export const DEFAULT_DIFFICULTY = 3;
-export const MAX_DIFFICULTY = 12;
+export const MAX_DIFFICULTY = 15;
 export const GAME_SPEED = 2000;
 
 export const GAME_STATUS = {
