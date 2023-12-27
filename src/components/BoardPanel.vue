@@ -9,9 +9,9 @@
         @selectCell="selectCell($event)"
       ></board-cell>
     </div>
-    <div class="board__description">Важкість <strong>{{ difficult }}</strong></div>
-    <div class="board__description">Перемоги <strong>{{ wins }}</strong></div>
-    <button class="board__start" @click="startGame" :disabled="toDisableStartButton">Почати</button>
+    <div class="board__description">{{ difficultText }} <strong>{{ difficult }}</strong></div>
+    <div class="board__description">{{ winsText }} <strong>{{ wins }}</strong></div>
+    <button class="board__start" @click="startGame" :disabled="toDisableStartButton">{{ startText }}</button>
   </div>
 </template>
 
@@ -20,13 +20,24 @@ import BoardCell from "@/components/BoardCell";
 import useGameInit from "@/components/composables/useGameInit";
 import useStartGame from "@/components/composables/useStartGame";
 import {GAME_STATUS} from "@/constans";
-import {computed, ref} from "vue";
+import { computed, ref } from 'vue';
 import useGameProcess from "@/components/composables/useGameProcess";
 
 export default {
   name: "Board-panel",
   components: {
     BoardCell
+  },
+  props: {
+    difficultText: {
+      type: String,
+    },
+    winsText: {
+      type: String,
+    },
+    startText: {
+      type: String,
+    }
   },
   setup() {
     const cellsNumber = 36;
